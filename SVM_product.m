@@ -1,3 +1,6 @@
+%现在存在问题敲刨无振动时和有振动时不能拟合。
+%现在有这种办法解决，一是做好端点检测用两个svm直接分类机械还是人工，2是用BP，做端点检测后用BP减小误报率还有进行分类。
+
 clc
 clear
 % number=1000;
@@ -139,55 +142,55 @@ clear
 % load('I:\data\20170730101742.mat'); no_4_1=shape(data_c1(925:927,:)); no_4_2=shape(data_c1(614:616,:)); no_4_3=shape(data_c1(472:475,:));
 % load('I:\data\20170730104144.mat'); no_5_1=shape(data_c1(925:928,:)); no_5_2=shape(data_c1(1379:1382,:)); no_5_3=shape(data_c1(371:373,:));no_5_4=shape(data_c1(471:474,:));
 % load('I:\data\20170730105450.mat'); no_6_1=shape(data_c1(371:373,:));  no_6_2=shape(data_c1(925:928,:));
+% 
 % load('I:\data\20170802123506.mat'); no_7_1=shape(data_c1(371:374,:)); no_7_2=shape(data_c1(371:374,:)); no_7_3=shape(data_c1(615:618,:)); 
 % load('I:\data\20170802123928.mat'); no_8_1=shape(data_c1(472:474,:));  no_8_2=shape(data_c1(1382:1384,:));  no_8_3=shape(data_c1(1973:1975,:));
 % load('I:\data\20170802125656.mat'); no_9_1=shape(data_c1(614:616,:)); no_9_2=shape(data_c1(1381:1384,:)); no_9_3=shape(data_c1(1973:1975,:));
 % load('I:\data\20170802145807.mat');  no_10_1=shape(data_c1(472:474,:)); no_10_2=shape(data_c1(371:374,:));
 % load('I:\data\20170802151536.mat');  no_11_1=shape(data_c1(925:927,:)); no_11_2=shape(data_c1(371:373,:)); no_11_3=shape(data_c1(471:473,:));
 % load('I:\data\20170802162935.mat');  no_12_1=shape(data_c1(925:927,:)); no_12_2=shape(data_c1(371:373,:));no_12_3=shape(data_c1(471:473,:));no_12_4=shape(data_c1(1371:1373,:));
-% no_5=[no_1_1,no_1_2,no_2_1,no_2_2,no_2_3,no_3_1,no_3_2,no_3_3,no_4_1,no_4_2,no_4_3,no_5_1,no_5_2,no_5_3,no_6_1,no_6_2];
-% no_6=[no_7_1,no_7_2,no_7_3,no_8_1,no_8_2,no_8_3,no_9_1,no_9_2,no_9_3,no_10_1,no_10_2,no_11_1,no_11_2,no_11_3,no_12_1,no_12_2,no_12_3];
-% no_train=[no_5,no_6];
-% save('no_train.mat','no_train');
+% no_1=[no_1_1,no_1_2,no_2_1,no_2_2,no_2_3,no_3_1,no_3_2,no_3_3,no_4_1,no_4_2,no_4_3,no_5_1,no_5_2,no_5_3,no_6_1,no_6_2];
+% no_2=[no_7_1,no_7_2,no_7_3,no_8_1,no_8_2,no_8_3,no_9_1,no_9_2,no_9_3,no_10_1,no_10_2,no_11_1,no_11_2,no_11_3,no_12_1,no_12_2,no_12_3];
+% save('no_1.mat','no_1');
+% save('no_2.mat','no_2');
+load('no_1.mat','no_1');
+% load('no_2.mat','no_2');
 load('qiao_train.mat','qiao_train');
 load('pao_train.mat','pao_train');
-load('wuajue_train.mat','wuajue_train');
+% load('wuajue_train.mat','wuajue_train');
 load('no_train.mat','no_train');
-qiao_train=qiao_train(1,1:1500000);
-wuajue_train=wuajue_train(1,1:2400000);
-no_train=no_train(1,1:4500000);
+% wuajue_train=wuajue_train(1,1:2:end);%这里只要挖掘一般的数据
+[no_1,r1]=aTeZhengtiqu3(no_1(1,1:3000000));%人工非振动数据
+% [no_2,j1]=aTeZhengtiqu3(no_2);%机械非振动数据
 [qiao_train,x1]=aTeZhengtiqu3(qiao_train);
-[pao_train,y1]=aTeZhengtiqu3(pao_train);
-[wuajue_train,z1]=aTeZhengtiqu3(wuajue_train);
-[no_train,w1]=aTeZhengtiqu3(no_train);
-%%
+[pao_train,y1]=aTeZhengtiqu3(pao_train);  
+% [wuajue_train,w1]=aTeZhengtiqu3(wuajue_train);
+%
 %先用svm二分类方法把侵入类型分为入侵和无入侵两种
 %若是入侵则分类标签是8，无入侵标签是7
 
-train_qiao_pao_wa=cat(1,qiao_train,pao_train,wuajue_train);
-train_label_no_train=repmat(7,1,w1);%挖掘的的标签
-train_label_qiao__pao_wa=repmat(8,1,x1+y1+z1);%敲刨的标签
-train_label=[train_label_no_train,train_label_qiao__pao_wa]';
-train=cat(1,no_train,train_qiao_pao_wa);
-svmStruct7_8 =svmtrain(train,train_label,'Showplot',true);
-save('svmStruct7_8','svmStruct7_8') 
-% %%
+% wuajue_train_label=ones(1,w1);%挖掘的的标签
+% no_ren_label=zeros(1,j1);%敲刨的标签
+% train_label=[no_ren_label,wuajue_train_label]';
+% train=cat(1,no_2,wuajue_train);
+% svmStruct0_1 =svmtrain(train,train_label,'Showplot',true);
+% save('svmStruct0_1','svmStruct0_1') 
 
 %先用svm二分类方法把侵入类型分为挖掘和镐刨两种
 %若是机械挖掘则分类标签是1，非挖掘标签是0
 
 train_qiao_or_pao=cat(1,qiao_train,pao_train);
-train_label_wajue=ones(1,z1);%挖掘的的标签
-train_label_qiao_or_pao=repmat(0,1,x1+y1);%敲刨的标签
-train_label=[train_label_wajue,train_label_qiao_or_pao]';
-train=cat(1,wuajue_train,train_qiao_or_pao);
-svmStruct1_0 =svmtrain(train,train_label,'Showplot',true);
-save('svmStruct1_0.mat','svmStruct1_0') 
-%
-%%若标签是1则显示为机械挖掘，若是0再对其进行二分类，敲击信号的标签是2，刨信号的标签是3
-train_label_qiao=repmat(2,1,x1);%敲的的标签
-train_label_pao=repmat(3,1,y1);%刨的标签
-train_label3=[train_label_qiao,train_label_pao]';
-train3=cat(1,qiao_train,pao_train);
-svmStruct2_3 =svmtrain(train3,train_label3,'Showplot',true);
-save('svmStruct2_3.mat','svmStruct2_3') 
+no_ren_label=zeros(1,r1);%挖掘的的标签
+train_label_qiao_or_pao=repmat(5,1,x1+y1);%敲刨的标签
+train_label=[no_ren_label,train_label_qiao_or_pao]';
+train=cat(1,no_1,train_qiao_or_pao);
+svmStruct0_5 =svmtrain(train,train_label,'Showplot',true);
+save('svmStruct0_5.mat','svmStruct0_5') 
+% %
+% %%若标签是1则显示为机械挖掘，若是0再对其进行二分类，敲击信号的标签是2，刨信号的标签是3
+% train_label_qiao=repmat(2,1,x1);%敲的的标签
+% train_label_pao=repmat(3,1,y1);%刨的标签
+% train_label3=[train_label_qiao,train_label_pao]';
+% train3=cat(1,qiao_train,pao_train);
+% svmStruct2_3 =svmtrain(train3,train_label3,'Showplot',true);
+% save('svmStruct2_3.mat','svmStruct2_3') 
