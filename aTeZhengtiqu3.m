@@ -1,21 +1,28 @@
 %本函数用来产生SVM模型。且效果很不错。
 function[x_tezheng,seg]=aTeZhengtiqu3(Data)
-number=500;
-inc=450;
-a_Data=shape(Data);%转换成1*n的形式
-Data=(enframe(a_Data,number,inc))';
+Data=double(Data);
+number=1000;
+%%注释处为svm_product使用，使用时把注释注释掉。
+[m,~]=size(Data);
+if m==1
+    inc=1000;
+    Data=(enframe(Data,number,inc))';
+end
 [~,seg]=size(Data);
+
+pt1=mean(Data);%平均值
+pt2=rms(Data);%均方差
+pt3=max(Data);%峰值
+pt4=pt3./pt2;%峰值指标
+pt5=pt3./pt1;%脉冲指标
+pt6=skewness(Data);%偏度
+pt7=kurtosis(Data);%峭度
+pt8=var(Data);%方差
 %%
 %时域指标
-Data_diff=abs(Data(:,2:end)-Data(:,1:end-1));
-Data_diff=[Data_diff,Data_diff(:,end)];
-Data_diff=sqrt(sum(power(Data_diff,2))/number);
+Data_diff=abs(Data(number/2+1:end,:)-Data(1:number/2,:));
+Data_diff=sqrt(sum(power(Data_diff,2))/number/2);
 
-p2=sum(abs(Data))/number;%Mean-absolute
-p9=max(abs(Data))./p2;%效果比较好，可以作为端点检测。
-
-p_r=periodogram(Data);
-p_r=sum(p_r(2:251,:))/250;
 %%
 %频域指标
 Y = abs(fft(Data));
@@ -38,5 +45,7 @@ f7=f3./f2;%Shape factor   等于1
 f8=max(abs(Y))./f1;%Clearance factor
 f9=max(abs(Y))./f2;%Impulse Indicator
 fx_kurtosis=kurtosis(Y);
-x_tezheng=[Data_diff;p9;f6;f7;f8;f9;fx_kurtosis;Ef]';%BP不需要进行转置
+pf2=var(Y);%频域方差
+pf3=mean(Y);%频域平均值
+x_tezheng=[Data_diff;pt4;pt6;pt5;pt7;f6;f7;f8;f9;pt1;pt2;fx_kurtosis;pf2;Ef;pf3];%BP结果形式为15*72668的形式
 end

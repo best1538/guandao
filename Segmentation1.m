@@ -8,7 +8,8 @@ function [data_c1]=Segmentation1(start_time,end_time,start_address,end_address,f
 [m,~]=size(filename);
 % data_use=[];
 for z=1:m
-   name_file=filename(z,:);
+   name_file=
+   (z,:);
 
 length_1s=4096*2*2*500; %1s数据大小 16bits
 fid=fopen([pathname,name_file],'r','l');
@@ -49,8 +50,8 @@ end
 fclose(fid);
 
 % data_use=cat(2,data_use,data_c1);%数组水平连接
-% save([num2str(name_file(1:14)),'.mat'],'data_c1')%保存数据到当前目录下
-save('zdata_c1.mat','data_c1')
+save([num2str(name_file(1:14)),'.mat'],'data_c1')%保存数据到当前目录下
+% save('zdata_c1.mat','data_c1')
 end
 end
 

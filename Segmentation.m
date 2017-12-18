@@ -4,8 +4,8 @@
 function [start_time,end_time,start_address,end_address]=Segmentation(start_time,end_time,start_address,end_address)
 %文件名，开始时间，结束时间，开始所在点，结束所在点（开始时间和开始所在点都是从0开始）
 length_1s=4096*2*2*500; %1s数据大小 16bits
-filename='20170802163146_C1C2_32768_100000_2_8.dat';
-pathname='I:\项目\中卫预警系统项目\数据\二线机械\';
+filename='20170802122620_C1C2_32768_100000_2_8.dat';
+pathname='I:\项目数据\中卫预警系统项目\数据\二线机械\'
 fid=fopen([pathname,filename],'r','l');
 fseek(fid,0,'eof');     %获取读取分析文件的长度  
 position=ftell(fid);    %读取此时指针的位置
@@ -42,7 +42,7 @@ for  i=start_time:end_time-1
     end 
 end
 fclose(fid);
-save('data_16_926_no_1631.mat','data_c1')%保存数据到当前目录下
+save('20170802122620.mat','data_c1')%保存数据到当前目录下
 % save('data_c2.mat','data_c2')
 end
 
