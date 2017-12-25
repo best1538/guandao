@@ -6,8 +6,8 @@ clear
 load('no_1.mat');
 load('no_2.mat');
 
-no_1=cut_wave(no_1)     %进行滤波处理
-no_2=cut_wave(no_2)
+% no_1=cut_wave(no_1)     %进行滤波处理
+% no_2=cut_wave(no_2)
 
 [no_1,~]=aTeZhengtiqu3(no_1); 
 no_1=no_1(:,1:2:end)
@@ -19,9 +19,9 @@ load('qiao_train.mat');
 load('pao_train.mat');
 load('wuajue_train.mat');
 
-qiao_train=cut_wave(qiao_train);
-pao_train=cut_wave(pao_train);
-wuajue_train=cut_wave(wuajue_train);
+% qiao_train=cut_wave(qiao_train);
+% pao_train=cut_wave(pao_train);
+% wuajue_train=cut_wave(wuajue_train);
 
 
 
@@ -44,7 +44,7 @@ net.trainParam.epochs = 1000;       % 最大训练次数
 net.trainParam.goal = 1e-5;         % 最小均方误差原来为10的-8
 % 训练与测试
 net = train(net,x_train,T1);             % 训练
-save('anet.mat','net')
+save('a_400_200net.mat','net')
 %%
 %bp2训练
 [qiao_train,x1]=aTeZhengtiqu3(qiao_train);
@@ -67,5 +67,5 @@ net.trainParam.epochs = 1000;       % 最大训练次数
 net.trainParam.goal = 1e-5;         % 最小均方误差原来为10的-8
 % 训练与测试
 net = train(net,x_train,T1);             % 训练
-save('bnet.mat','net')
+save('b_400_200net.mat','net')
 

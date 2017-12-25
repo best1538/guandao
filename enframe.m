@@ -1,4 +1,4 @@
-%%win表示窗口大小，inc表示帧移动。若是800则1000中移动200
+%%win表示窗口大小，inc表示帧移动。
 function f=enframe(x,win,inc)
 nx=length(x);
 nwin=length(win);

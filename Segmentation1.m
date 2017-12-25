@@ -8,8 +8,7 @@ function [data_c1]=Segmentation1(start_time,end_time,start_address,end_address,f
 [m,~]=size(filename);
 % data_use=[];
 for z=1:m
-   name_file=
-   (z,:);
+   name_file= (z,:);
 
 length_1s=4096*2*2*500; %1s数据大小 16bits
 fid=fopen([pathname,name_file],'r','l');

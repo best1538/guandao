@@ -1,14 +1,17 @@
-function [state]=ayuzhi2(data,threshold_Data_diff)
-number=1000;
+function [state,seg]=ayuzhi2(data,threshold_pt4)
+number=500;
 inc=500;
 Data=(enframe(data,number,inc))';
 [~,seg]=size(Data);
 state=zeros(1,seg);
 address=[];
-Data_diff=abs(Data(number/2+1:end,:)-Data(1:number/2,:));
-Data_diff=sum(Data_diff)/number/2;
+pt2=rms(Data);%均方差
+pt3=max(Data);%峰值
+pt4=pt3./pt2;%峰值指标
+% Data_diff=abs(Data(number/2+1:end,:)-Data(1:number/2,:));
+% Data_diff=sum(Data_diff)/number/2;
 for j=1:seg
-    if (Data_diff(j)>threshold_Data_diff)%&&(cross_zero(j+1)<threshold_cross_zero)&&(shang(j+1)<threshold_shang)
+    if (pt4(j)>threshold_pt4)%&&(cross_zero(j+1)<threshold_cross_zero)&&(shang(j+1)<threshold_shang)
         address=[address,j];
     end
 end

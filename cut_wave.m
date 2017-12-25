@@ -4,8 +4,7 @@ data=double(data);
 a4=wrcoef('a',c,l,'db3',4);
 d4=wrcoef('d',c,l,'db3',4);
 d3=wrcoef('d',c,l,'db3',3);
-% d3=wrcoef('d',c,l,'db3',3);
-% d2=wrcoef('d',c,l,'db3',2);
-% d1=wrcoef('d',c,l,'db3',1);
-out=a4+d4+d3;
+d2=wrcoef('d',c,l,'db3',2);
+d1=wrcoef('d',c,l,'db3',1);
+out=d2+d3+d4;
 end

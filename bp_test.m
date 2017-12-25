@@ -1,8 +1,8 @@
 
 function temp_state=bp_test(test_data)
-load('anet.mat')
+load('a_400_200net.mat')
 anet=net;%%当时自变量和bnet一样，在这里做个区分。
-load('bnet.mat')
+load('b_400_200net.mat')
 bnet=net;
 [x_tezheng,~]=aTeZhengtiqu3(test_data);
 [~,n]=size(x_tezheng);

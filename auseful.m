@@ -1,3 +1,16 @@
+%%
+%变量循环超重要
+[p,~]=size(filename);
+pathname='I:\data\';
+for z=1:p
+    name_file= filename(z,1:14);
+    load([pathname name_file '.mat']);
+    a=data_c1(1,:);
+    save(['a',num2str(name_file(1:14)),'.mat'],'a')%保存数据到当前目录下
+end
+%加入路径时保存
+save(strcat('D:\','final',num2str(name_file(1:14)),'.mat'),'a');
+
 %连接时循环变量、
 strcat('0',num2str(i),'time');
 %%预先分配内存。

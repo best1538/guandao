@@ -1,11 +1,11 @@
 %本函数用来产生SVM模型。且效果很不错。
 function[x_tezheng,seg]=aTeZhengtiqu3(Data)
 Data=double(Data);
-number=1000;
+number=400;
 %%注释处为svm_product使用，使用时把注释注释掉。
 [m,~]=size(Data);
 if m==1
-    inc=1000;
+    inc=200;
     Data=(enframe(Data,number,inc))';
 end
 [~,seg]=size(Data);
