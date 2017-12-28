@@ -73,7 +73,7 @@ repmat([1;0;0],1,a)
 %% reshape
 Data=reshape(Data,number,seg);
 %% save语句的运用
-save('D:\\jingyan\\example.mat','A') 
+save('D:\jingyan\\example.mat','A') 
 saveas(gcf,'pao3','fig')
 %% 用来找出振动完整信号
 clc
